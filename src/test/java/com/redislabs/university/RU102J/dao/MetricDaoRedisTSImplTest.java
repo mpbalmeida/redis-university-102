@@ -8,6 +8,7 @@ import com.redislabs.university.RU102J.api.MeterReading;
 import com.redislabs.university.RU102J.api.MetricUnit;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -19,9 +20,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
+@Ignore
 public class MetricDaoRedisTSImplTest {
 
     private ArrayList<MeterReading> readings;
@@ -54,12 +56,12 @@ public class MetricDaoRedisTSImplTest {
 
     /**
      * Generate 72 hours worth of data.
-    */
+     */
     @Before
     public void generateData() {
         readings = new ArrayList<>();
         ZonedDateTime time = startingDate;
-        for (int i=0; i <  72 * 60; i++) {
+        for (int i = 0; i < 72 * 60; i++) {
             MeterReading reading = new MeterReading();
             reading.setSiteId(siteId);
             reading.setTempC(i * 1.0);
@@ -95,7 +97,7 @@ public class MetricDaoRedisTSImplTest {
         }
 
         List<Measurement> measurements = metricDao.getRecent(siteId, MetricUnit.WHGenerated,
-         startingDate, limit);
+                startingDate, limit);
         assertThat(measurements.size(), is(limit));
     }
 }
